@@ -1,6 +1,6 @@
-name: Publish NuGet
-author: Rohith Reddy (@rohith)
-description: Build, Pack & Publish a NuGet package with dotnet core on project version change
+name: Publish GH Package
+author: Rohan Büchner
+description: Build, Pack & Publish a NuGet package with dotnet core on project version change.
 
 inputs:
     PROJECT_FILE_PATH:
