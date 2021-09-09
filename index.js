@@ -119,9 +119,11 @@ class Action {
                 res.on("data", chunk => body += chunk)
                 res.on("end", () => {
                     const existingVersions = JSON.parse(body)
-                    const checkSum = existingVersions
-                        .items
-                        .every((node) => {
+                                   const checkSum = null 
+                    let prevVersions = existingVersions.items;
+
+                    if(prevVersions)
+                        prevVersions.every((node) => {
                             if (!node.items)
                                 return true;
                             // this will quit the loop if true
