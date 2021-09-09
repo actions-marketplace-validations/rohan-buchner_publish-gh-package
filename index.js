@@ -119,24 +119,27 @@ class Action {
                 res.on("data", chunk => body += chunk)
                 res.on("end", () => {
                     const existingVersions = JSON.parse(body)
-                    const checkSum = null 
                     let prevVersions = existingVersions.items;
+                    if(prevVersions) {
+                        const canPublish = prevVersions.every((node) => {
+                            // there are no previous versions, we can still publish
+                            if (!node.items)
+                                return true;
 
-                    if(prevVersions)
-                       checkSum = prevVersions.every((node) => {
-                           if (!node.items)
-                               return true;
-                           // this will quit the loop if true
-                           return (node.items.every((row) => row.catalogEntry && row.catalogEntry.version !== this.version))
-                       })
+                            // check if our children have any conflits, if not, we can still publish
+                            return (node.items.every((row) => row.catalogEntry && row.catalogEntry.version !== this.version))
+                        })
 
-                    // only if we have NOT found any matching version in the cloud, we can push this.
-                    if (checkSum) {
+                        if (canPublish) {
+                           console.log(`Old but gold! Lets do an update to version ${this.version}`)
+                           this._pushPackage(this.version, this.packageName)
+                        } else {
+                            console.warn(`Conflicting Version ${this.version} found, push skipped.`)
+                        }
+                    } else {                       
+                        console.log(`OOOh! A Brand new Package: ${this.version}`)
                         this._pushPackage(this.version, this.packageName)
-                    } else {
-                        console.warn(`Conflicting Version ${this.version} found, push skipped.`)
                     }
-                })
             }
 
             if (res.statusCode == 401) {
