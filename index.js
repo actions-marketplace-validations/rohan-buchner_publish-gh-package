@@ -119,16 +119,16 @@ class Action {
                 res.on("data", chunk => body += chunk)
                 res.on("end", () => {
                     const existingVersions = JSON.parse(body)
-                                   const checkSum = null 
+                    const checkSum = null 
                     let prevVersions = existingVersions.items;
 
                     if(prevVersions)
-                        prevVersions.every((node) => {
-                            if (!node.items)
-                                return true;
-                            // this will quit the loop if true
-                            return (node.items.every((row) => row.catalogEntry && row.catalogEntry.version !== this.version))
-                        })
+                       checkSum = prevVersions.every((node) => {
+                           if (!node.items)
+                               return true;
+                           // this will quit the loop if true
+                           return (node.items.every((row) => row.catalogEntry && row.catalogEntry.version !== this.version))
+                       })
 
                     // only if we have NOT found any matching version in the cloud, we can push this.
                     if (checkSum) {
