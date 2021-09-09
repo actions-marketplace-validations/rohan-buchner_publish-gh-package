@@ -140,6 +140,7 @@ class Action {
                         console.log(`OOOh! A Brand new Package: ${this.version}`)
                         this._pushPackage(this.version, this.packageName)
                     }
+                })
             }
 
             if (res.statusCode == 401) {
